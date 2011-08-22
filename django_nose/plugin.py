@@ -67,6 +67,14 @@ class DjangoSetUpPlugin(object):
             return False
         self._registry.add(function)
 
+    def makeTest(self, test, parent):
+        if self.needs_db:
+            return
+        if not test.im_class:
+            return
+        if issubclass(test.im_class, TransactionTestCase):
+            self.needs_db = True
+
     def beforeImport(self, filename, module):
         # handle case of tests.models
         if not os.path.isdir(filename):

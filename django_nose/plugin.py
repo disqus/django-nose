@@ -70,7 +70,7 @@ class DjangoSetUpPlugin(object):
     def makeTest(self, test, parent):
         if self.needs_db:
             return
-        if not test.im_class:
+        if not getattr(test, 'im_class', None):
             return
         if issubclass(test.im_class, TransactionTestCase):
             self.needs_db = True
